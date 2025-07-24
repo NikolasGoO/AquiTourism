@@ -1,35 +1,35 @@
 # AquiTourism
 
-**AquiTourism** é uma API moderna desenvolvida com **.NET 8**, voltada para o gerenciamento de dados relacionados ao turismo, como atrações e operadores. O projeto segue os princípios de **Clean Architecture**, utilizando **Entity Framework Core**, **AutoMapper** e **Injeção de Dependência** para garantir modularidade, testabilidade e escalabilidade.
+**AquiTourism** is a modern API built with **.NET 8**, designed to manage tourism-related data such as attractions and operators. It follows **Clean Architecture** principles and utilizes **Entity Framework Core**, **AutoMapper**, and **Dependency Injection** to ensure modularity, testability, and scalability.
 
 ---
 
-## ✅ Funcionalidades
+## ✅ Features
 
-### 🎯 Gerenciamento de Atrações
-- Operações CRUD completas
-- Filtros personalizáveis e paginação
+### 🎯 Attraction Management
+- Full CRUD operations
+- Custom filtering and pagination
 
-### 👤 Gerenciamento de Operadores
-- Cadastro com validação de **e-mail** e **CPF** únicos
-- Autenticação com geração de **token JWT**
-- Criação, validação e redefinição de senha
-- Atualização de dados cadastrais
-- Desativação e exclusão lógica de operadores
+### 👤 Operator Management
+- Registration with unique **email** and **CPF** validation
+- Authentication with **JWT token** generation
+- Password creation, validation, and reset
+- Update of operator data
+- Operator deactivation and logical deletion
 
-### 🧰 Recursos Técnicos
-- API RESTful com **versionamento**
-- Documentação interativa via **Swagger**
-- Implementação do **Padrão Unit of Work** para consistência transacional
-- **AutoMapper** para mapeamento de objetos
-- Arquitetura extensível com separação de camadas:
+### 🧰 Technical Features
+- RESTful API with **versioning**
+- Interactive API documentation via **Swagger**
+- Implements **Unit of Work** pattern for transactional consistency
+- **AutoMapper** for object mapping
+- Extensible architecture with separated layers:
   - Application
   - Domain
   - Infrastructure
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Technologies
 
 - [.NET 8](https://dotnet.microsoft.com/download)
 - C# 12
@@ -37,77 +37,77 @@
 - AutoMapper
 - Swagger (Swashbuckle)
 - Dependency Injection
-- SQL Server (padrão, mas configurável)
+- SQL Server (default, but configurable)
 
 ---
 
-## 🚀 Como Começar
+## 🚀 Getting Started
 
-### Pré-requisitos
+### Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
-- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) ou banco compatível
+- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) or any compatible database
 
-### Passo a passo
+### Setup Steps
 
-1. **Clone o repositório:**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/yourusername/AquiTourism.git
    cd AquiTourism
    ```
 
-2. **Configure a string de conexão:**
-   - Arquivo: `src/AquiTourism.API/appsettings.json`
+2. **Configure the database connection:**
+   - File: `src/AquiTourism.API/appsettings.json`
 
-3. **Aplique as migrações do banco de dados:**
+3. **Apply database migrations:**
    ```bash
    dotnet ef database update --project src/AquiTourism.Infra.Data
    ```
 
-4. **Execute a aplicação:**
+4. **Run the application:**
    ```bash
    dotnet run --project src/AquiTourism.API
    ```
 
-5. **Acesse o Swagger UI:**
-   - No navegador: [https://localhost:5001/swagger](https://localhost:5001/swagger)
+5. **Access Swagger UI:**
+   - Open in your browser: [https://localhost:5001/swagger](https://localhost:5001/swagger)
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 AquiTourism
 │
 ├── src/
-│   ├── AquiTourism.API/                # Camada de API (controllers, configs)
-│   ├── AquiTourism.Application/        # Serviços da aplicação, ViewModels, AutoMapper
-│   ├── AquiTourism.Domain/             # Entidades e interfaces de domínio
-│   ├── AquiTourism.Infra.Data/         # Repositórios, EF Core, contexto de dados
-│   ├── AquiTourism.Infra.CrossCutting/ # Injeção de dependência, utilitários
-│   └── AquiTourism.Core/               # Objetos de domínio, enums, helpers
+│   ├── AquiTourism.API/                # API layer (controllers, configurations)
+│   ├── AquiTourism.Application/        # Application services, view models, AutoMapper
+│   ├── AquiTourism.Domain/             # Domain entities and interfaces
+│   ├── AquiTourism.Infra.Data/         # Repositories, EF Core, DbContext
+│   ├── AquiTourism.Infra.CrossCutting/ # Dependency injection, shared utilities
+│   └── AquiTourism.Core/               # Core domain objects, enums, helpers
 ```
 
 ---
 
-## 📌 Como Utilizar
+## 📌 Usage
 
-- Utilize o **Swagger UI** para testar e explorar os endpoints disponíveis.
-- Realize a integração com **aplicações web ou mobile** por meio da API REST.
-- O registro de operadores exige **confirmação de senha**, **CPF** e **e-mail únicos**.
-- A autenticação retorna um **JWT token** necessário para acessar rotas protegidas.
-- Operadores podem ser **desativados** ou ter a senha **redefinida** via endpoints dedicados.
-
----
-
-## 🤝 Contribuindo
-
-Contribuições são muito bem-vindas!  
-Sinta-se à vontade para abrir issues ou enviar pull requests com sugestões, correções e melhorias.
+- Use **Swagger UI** to explore and test API endpoints
+- Integrate with your **frontend or mobile app** via the documented REST API
+- Operator registration enforces **email** and **CPF** uniqueness, plus password confirmation
+- Authentication returns a **JWT token** for secure access
+- Operators can be **deactivated** or have their password **reset** via specific endpoints
 
 ---
 
-## 📄 Licença
+## 🤝 Contributing
 
-Este projeto está licenciado sob a **MIT License**.  
-Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.
+Contributions are welcome!  
+Feel free to open issues or submit pull requests for suggestions, bug fixes, or improvements.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.  
+See the [LICENSE](./LICENSE) file for more details.
