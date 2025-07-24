@@ -22,5 +22,8 @@ namespace AquiTourism.Domain.Entities
         public string? Schedules { get; set; }
         public string? Address { get; set; }
         public string Link { get; set; }
+        public int CreatedByUserId { get; set; }
+        public int? DeactivatedByUserId { get; set; }
+        public int? UpdatedByUserId { get; set; }
     }
 }

@@ -19,5 +19,7 @@ namespace AquiTourism.Application.ViewModel
         [Required(ErrorMessage = "O campo CPF é obrigatório.")]
         [RegularExpression(@"^\d{11}$", ErrorMessage = "CPF deve conter 11 dígitos numéricos.")]
         public string Cpf { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatorUserId { get; set; }
     }
 }

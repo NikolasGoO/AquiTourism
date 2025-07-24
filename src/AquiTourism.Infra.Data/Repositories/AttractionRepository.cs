@@ -64,6 +64,12 @@ namespace AquiTourism.Infra.Data.Repositories
             return entity;
         }
 
+        public async Task<IEnumerable<Attraction>> GetAll()
+        {
+            var context = DbSet.AsQueryable();
+            return await context.ToListAsync();
+        }
+
         public Attraction Update(Attraction entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));

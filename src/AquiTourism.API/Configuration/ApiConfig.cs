@@ -1,5 +1,8 @@
 ﻿using DevGames.API.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 
 namespace AquiTourism.API.Configuration
 {
@@ -28,18 +31,45 @@ namespace AquiTourism.API.Configuration
 
         private static void AddJwtConfiguration(IServiceCollection services)
         {
+            var key = Encoding.ASCII.GetBytes("k8V$3jWz!rTpL#9cXq7uB1dEo6FgM2nA");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         public static WebApplication UseStartupConfiguration(this WebApplication app)
         {
             app.UseHttpsRedirection();
+
             app.UseRouting();
+
             app.UseCors("MyPolicy");
+
+            app.UseAuthentication();     
+            app.UseAuthorization();      
 
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            app.MapControllers();
+            app.MapControllers();        
+
             return app;
         }
 

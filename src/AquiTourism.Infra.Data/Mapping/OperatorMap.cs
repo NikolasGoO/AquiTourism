@@ -19,6 +19,7 @@ namespace AquiTourism.Infra.Data.Mapping
             builder.Property(o => o.PasswordHash).IsRequired();
             builder.Property(o => o.PasswordSalt).IsRequired();
             builder.Property(o => o.CPF).IsRequired().HasMaxLength(11);
+            builder.Property(o => o.CreatorUserId).IsRequired();
         }
     }
 }

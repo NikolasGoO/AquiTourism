@@ -4,6 +4,7 @@ using AquiTourism.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AquiTourism.Infra.Data.Migrations
 {
     [DbContext(typeof(AquiTourismDbContext))]
-    partial class AquiTourismDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250626182444_AddingPropietiesInAttractionDomain")]
+    partial class AddingPropietiesInAttractionDomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +91,6 @@ namespace AquiTourism.Infra.Data.Migrations
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("UpdatedByUserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Aq.Attraction", (string)null);
@@ -111,9 +111,6 @@ namespace AquiTourism.Infra.Data.Migrations
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("CreatorUserId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()

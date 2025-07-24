@@ -28,7 +28,7 @@ namespace AquiTourism.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<OperatorViewModel> CreateAsync(OperatorCreateViewModel model)
+        public async Task<OperatorViewModel> CreateAsync(OperatorCreateViewModel model, int creatorUserId)
         {
             var existing = await _operatorRepository.GetByEmailAsync(model.Email);
             if (existing != null)
@@ -45,6 +45,8 @@ namespace AquiTourism.Application.Services
                 new Cpf(model.Cpf)
             );
 
+            operatorEntity.CreatorUserId = creatorUserId;
+
             _operatorRepository.Add(operatorEntity);
             Commit();
 
@@ -56,6 +58,8 @@ namespace AquiTourism.Application.Services
             var entity = await _operatorRepository.GetByIdAsync(id);
             if (entity == null || !entity.IsActive)
                 return false;
+            if (!entity.IsActive)
+                throw new DomainException("O Usuário já está desativado!");
 
             entity.IsActive = false;
             _operatorRepository.Update(entity);
@@ -123,6 +127,15 @@ namespace AquiTourism.Application.Services
             Commit();
 
             return true;
+        }
+
+        public async Task<string> AuthenticateAndGenerateTokenAsync(OperatorLoginViewModel model, string jwtSecret)
+        {
+            var operatorEntity = await _operatorRepository.GetByEmailAsync(model.Email);
+            if (operatorEntity == null || !Password.Verify(model.Password, operatorEntity.PasswordHash, operatorEntity.PasswordSalt))
+                return null;
+
+            return JwtTokenGenerator.GenerateToken(operatorEntity.Id, operatorEntity.Name, jwtSecret);
         }
     }
 }

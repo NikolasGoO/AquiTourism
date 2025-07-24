@@ -17,6 +17,7 @@ namespace AquiTourism.Domain.Interfaces
         Task<IEnumerable<Attraction>> SearchAsync(Expression<Func<Attraction, bool>> predicate);
         IEnumerable<Attraction> Search(Expression<Func<Attraction, bool>> predicate, int page, int pageSize);
         Attraction Add(Attraction entity);
+        Task<IEnumerable<Attraction>> GetAll();
         Task<Attraction> AddAsync(Attraction entity);
         Attraction Update(Attraction entity);
         void Remove(int id);

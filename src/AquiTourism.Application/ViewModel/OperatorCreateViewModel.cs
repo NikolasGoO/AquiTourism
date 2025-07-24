@@ -21,5 +21,6 @@ namespace AquiTourism.Application.ViewModel
         [Required(ErrorMessage = "Confirme a senha.")]
         [Compare("Password", ErrorMessage = "As senhas não coincidem.")]
         public string ConfirmPassword { get; set; }
+        public int CreatorUserId { get; set; }
     }
 }

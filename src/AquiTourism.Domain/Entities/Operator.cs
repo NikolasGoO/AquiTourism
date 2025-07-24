@@ -21,6 +21,7 @@ namespace AquiTourism.Domain.Entities
         public string PasswordHash { get; private set; }
         public string PasswordSalt { get; private set; }
         public string CPF { get; set; }
+        public int CreatorUserId { get; set; }
 
         public void UpdatePassword(string hash, string salt)
         {

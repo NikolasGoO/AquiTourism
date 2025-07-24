@@ -27,6 +27,8 @@ namespace AquiTourism.Infra.Data.Mapping
             builder.Property(a => a.Schedules).IsRequired().HasMaxLength(500);
             builder.Property(a => a.Address).HasMaxLength(300);
             builder.Property(a => a.Link).HasMaxLength(1000);
+            builder.Property(a => a.CreatedByUserId).IsRequired();
+            builder.Property(a => a.DeactivatedByUserId).IsRequired(false);
         }
     }
 }

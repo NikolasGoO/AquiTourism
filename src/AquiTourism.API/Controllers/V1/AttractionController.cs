@@ -1,6 +1,8 @@
 ﻿using AquiTourism.Application.Interfaces;
 using AquiTourism.Application.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AquiTourism.API.Controllers.V1
@@ -16,20 +18,29 @@ namespace AquiTourism.API.Controllers.V1
             _attractionAppService = attractionAppService;
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AttractionViewModel model)
+        public async Task<IActionResult> Create([FromBody] AttractionViewModel viewModel)
         {
-            var result = await _attractionAppService.AddAsync(model);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            var userIdClaim = User.FindFirst("sub") ?? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
+            var result = await _attractionAppService.AddAsync(viewModel, userId);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] AttractionViewModel model)
         {
-            model.Id = id;
-            var result = _attractionAppService.Update(model);
-            if (result == null)
-                return NotFound();
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            var result = _attractionAppService.Update(model, userId);
             return Ok(result);
         }
 
@@ -42,13 +53,24 @@ namespace AquiTourism.API.Controllers.V1
             return Ok(result);
         }
 
-        [HttpPatch("{id}/deactivate")]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _attractionAppService.GetAllAsync();
+            return Ok(result);
+        }
+
+        [HttpPost("{id}/deactivate")]
         public async Task<IActionResult> Deactivate(int id)
         {
-            var success = await _attractionAppService.DeactivateAsync(id);
-            if (!success)
-                return NotFound();
-            return NoContent();
+            var userIdClaim = User.FindFirst("sub") ?? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
+            var success = await _attractionAppService.DeactivateAsync(id, userId);
+            if (!success) return NotFound();
+            return Ok();
         }
     }
 }

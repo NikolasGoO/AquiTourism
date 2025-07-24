@@ -11,8 +11,8 @@ namespace AquiTourism.Application.ViewModel
     public class AttractionViewModel
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "O campo nome é obrigatório")]
-        public List<string> ImagesUrl { get; set; }
+        public string? Image { get; set; }
+        public List<string>? ImagesUrl { get; set; }
         public string Name { get; set; }
         [Required(ErrorMessage = "O campo tipo é obrigatório")]
         public TypeAttraction Type { get; set; }
@@ -26,5 +26,9 @@ namespace AquiTourism.Application.ViewModel
         public string? Schedules { get; set; }
         public string? Address { get; set; }
         public string Link { get; set; }
+        public bool IsActive { get; set; } = true;
+        public int CreatedByUserId { get; set; }
+        public int? DeactivatedByUserId { get; set; }
+        public int? UpdatedByUserId { get; set; }
     }
 }

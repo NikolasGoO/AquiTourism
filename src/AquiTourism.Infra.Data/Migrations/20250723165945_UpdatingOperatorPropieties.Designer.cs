@@ -4,6 +4,7 @@ using AquiTourism.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AquiTourism.Infra.Data.Migrations
 {
     [DbContext(typeof(AquiTourismDbContext))]
-    partial class AquiTourismDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250723165945_UpdatingOperatorPropieties")]
+    partial class UpdatingOperatorPropieties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

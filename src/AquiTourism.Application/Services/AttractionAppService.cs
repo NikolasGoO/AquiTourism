@@ -26,9 +26,16 @@ namespace AquiTourism.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<AttractionViewModel> AddAsync(AttractionViewModel viewModel)
+        public async Task<AttractionViewModel> AddAsync(AttractionViewModel viewModel, int createdByUserId)
         {
+            if (!string.IsNullOrEmpty(viewModel.Image))
+                viewModel.ImagesUrl = new List<string> { viewModel.Image };
+
             Attraction domain = _mapper.Map<Attraction>(viewModel);
+            domain.CreatedByUserId = createdByUserId;
+            domain.IsActive = true;
+            domain.CreatedAt = DateTimeOffset.UtcNow;
+
             domain = await _repository.AddAsync(domain);
             Commit();
 
@@ -36,23 +43,56 @@ namespace AquiTourism.Application.Services
             return viewModelReturn;
         }
 
-        public AttractionViewModel Update(AttractionViewModel viewModel)
+        public AttractionViewModel Update(AttractionViewModel viewModel, int userId)
         {
-            var domain = _mapper.Map<Attraction>(viewModel);
-            domain = _repository.Update(domain);
+            var original = _repository.GetById(viewModel.Id);
+            if (original == null)
+                throw new Exception("Attraction not found");
+
+            original.Name = viewModel.Name;
+            original.Type = viewModel.Type;
+            original.Slogan = viewModel.Slogan;
+            original.Description = viewModel.Description;
+            original.ShortDescription = viewModel.ShortDescription;
+            original.Price = viewModel.Price;
+            original.Schedules = viewModel.Schedules;
+            original.Address = viewModel.Address;
+            original.Link = viewModel.Link;
+            original.ImagesUrl = viewModel.ImagesUrl ?? original.ImagesUrl;
+            original.UpdatedAt = DateTimeOffset.UtcNow;
+            original.UpdatedByUserId = userId;
+
+            var domain = _repository.Update(original);
             Commit();
 
             AttractionViewModel viewModelReturn = _mapper.Map<AttractionViewModel>(domain);
             return viewModelReturn;
         }
 
-        public async Task<bool> DeactivateAsync(int id)
+        public async Task<bool> DeactivateAsync(int id, int deactivatedByUserId)
         {
             var entity = await _repository.GetByIdAsync(id);
             if (entity == null || !entity.IsActive)
                 return false;
 
             entity.IsActive = false;
+            entity.DeactivatedByUserId = deactivatedByUserId;
+            entity.UpdatedAt = DateTimeOffset.UtcNow;
+
+            _repository.Update(entity);
+            Commit();
+            return true;
+        }
+
+        public async Task<bool> ActivateAsync(int id, int activatedByUserId)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+            if (entity == null || entity.IsActive)
+                return false;
+            entity.IsActive = true;
+            entity.UpdatedByUserId = activatedByUserId;
+            entity.UpdatedAt = DateTimeOffset.UtcNow;
+            entity.DeactivatedByUserId = null;
             _repository.Update(entity);
             Commit();
             return true;
@@ -82,6 +122,13 @@ namespace AquiTourism.Application.Services
             var domain = await _repository.GetByIdAsync(id);
             var viewModel = _mapper.Map<AttractionViewModel>(domain);
             return viewModel;
+        }
+
+        public async Task<IEnumerable<AttractionViewModel>> GetAllAsync()
+        {
+            var domainList = await _repository.GetAll();
+            var viewModelList = _mapper.Map<IEnumerable<AttractionViewModel>>(domainList);
+            return viewModelList;
         }
 
         public IEnumerable<AttractionViewModel> Search(Expression<Func<Attraction, bool>> predicate)
